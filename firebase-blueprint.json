@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "UserProfile": {
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "upazila": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "ServiceBookingRecord": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "deviceType": { "type": "string" },
+        "brand": { "type": "string" },
+        "modelNumber": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "issueDescription": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerName", "phone", "deviceType", "serviceType", "status", "createdAt"]
+    },
+    "AnalyticsRecord": {
+      "type": "object",
+      "properties": {
+        "totalVisitors": { "type": "number" },
+        "lastUpdated": { "type": "string" }
+      }
+    },
+    "RepairGalleryRecord": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "titleBn": { "type": "string" },
+        "deviceType": { "type": "string" },
+        "brand": { "type": "string" },
+        "modelNumber": { "type": "string" },
+        "problemDescription": { "type": "string" },
+        "solutionApplied": { "type": "string" },
+        "beforeImageUrl": { "type": "string" },
+        "afterImageUrl": { "type": "string" },
+        "customerLocation": { "type": "string" },
+        "rating": { "type": "number" },
+        "turnaroundHours": { "type": "number" },
+        "isVerified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "titleBn", "deviceType", "problemDescription", "solutionApplied", "afterImageUrl", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with saved contact and address for service requests."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "ServiceBookingRecord",
+      "description": "Electronics repair service bookings and lab tracking tokens."
+    },
+    "/service_requests/{requestId}": {
+      "schema": "ServiceBookingRecord",
+      "description": "Customer submitted service repair requests in real-time."
+    },
+    "/repairs_gallery/{repairId}": {
+      "schema": "RepairGalleryRecord",
+      "description": "Feed of recent successful lab repairs and display bonding case studies."
+    },
+    "/analytics/{docId}": {
+      "schema": "AnalyticsRecord",
+      "description": "Aggregated platform traffic and visitor counters."
+    },
+    "/site_analytics/{docId}": {
+      "schema": "AnalyticsRecord",
+      "description": "Realtime site visitor and traffic counters."
+    }
+  }
+}

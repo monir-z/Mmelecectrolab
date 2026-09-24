@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'mmeletronicsservicingcenter@gmail.com' ||
+        request.auth.token.email == 'primemonir45@gmail.com'
+      );
+    }
+
+    // User profile access control: owner can manage, admins can read all users
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) || isAdmin();
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Service Bookings access control: anyone can query by ID for tracking, admins can manage all
+    match /bookings/{bookingId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    // Direct Service Requests collection for real-time CRM dashboard
+    match /service_requests/{requestId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    // Recent successful repairs gallery feed
+    match /repairs_gallery/{repairId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Platform analytics & visitor traffic
+    match /analytics/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /site_analytics/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Connection test document
+    match /_connection_test_/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

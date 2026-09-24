@@ -1,0 +1,7 @@
+{
+  "name": "MM ELECTROLAB - Precision Electronics & Display Lab",
+  "description": "Enterprise-grade e-commerce and precision electronics servicing platform for MM ELECTROLAB, Sundarganj, Gaibandha. LED TV Display bonding, genuine components, and expert appliance repair.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
